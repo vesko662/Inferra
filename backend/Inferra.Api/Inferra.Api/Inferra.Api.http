@@ -1,0 +1,6 @@
+@Inferra.Api_HostAddress = http://localhost:5277
+
+GET {{Inferra.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

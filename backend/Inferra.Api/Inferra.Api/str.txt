@@ -1,0 +1,92 @@
+Inferra/
+└── backend/
+    ├── Inferra.sln
+    │
+    ├── Inferra.Api/
+    │   ├── Controllers/
+    │   │   ├── TokensController.cs
+    │   │   ├── PricesController.cs
+    │   │   ├── MarketController.cs
+    │   │   └── PredictionsController.cs
+    │   ├── Extensions/
+    │   │   └── ServiceCollectionExtensions.cs
+    │   ├── Program.cs
+    │   ├── appsettings.json
+    │   └── appsettings.Development.json
+    │
+    ├── Inferra.Application/
+    │   ├── DTOs/
+    │   │   ├── TokenDto.cs
+    │   │   ├── PriceHistoryPointDto.cs
+    │   │   ├── MarketSnapshotDto.cs
+    │   │   └── PredictionDto.cs
+    │   ├── Interfaces/
+    │   │   ├── Services/
+    │   │   │   ├── ITokenService.cs
+    │   │   │   ├── IPriceService.cs
+    │   │   │   ├── IMarketService.cs
+    │   │   │   └── IPredictionService.cs
+    │   │   ├── Repositories/
+    │   │   │   ├── ITokenRepository.cs
+    │   │   │   ├── IDailyPriceRepository.cs
+    │   │   │   └── IMarketSnapshotRepository.cs
+    │   │   └── Integrations/
+    │   │       ├── IBinanceClient.cs
+    │   │       ├── ICoinGeckoClient.cs
+    │   │       └── IPythonMlClient.cs
+    │   ├── Services/
+    │   │   ├── TokenService.cs
+    │   │   ├── PriceService.cs
+    │   │   ├── MarketService.cs
+    │   │   └── PredictionService.cs
+    │   └── Mappers/
+    │       ├── TokenMapper.cs
+    │       ├── PriceMapper.cs
+    │       ├── MarketMapper.cs
+    │       └── PredictionMapper.cs
+    │
+    ├── Inferra.Domain/
+    │   ├── Entities/
+    │   │   ├── Token.cs
+    │   │   ├── DailyPrice.cs
+    │   │   ├── MarketSnapshot.cs
+    │   │   └── Prediction.cs
+    │   ├── Enums/
+    │   └── Constants/
+    │
+    └── Inferra.Infrastructure/
+        ├── Data/
+        │   ├── AppDbContext.cs
+        │   ├── Configurations/
+        │   │   ├── TokenConfiguration.cs
+        │   │   ├── DailyPriceConfiguration.cs
+        │   │   ├── MarketSnapshotConfiguration.cs
+        │   │   └── PredictionConfiguration.cs
+        │   ├── Repositories/
+        │   │   ├── TokenRepository.cs
+        │   │   ├── DailyPriceRepository.cs
+        │   │   └── MarketSnapshotRepository.cs
+        │   └── Seed/
+        │       └── TokenSeeder.cs
+        │
+        ├── Integrations/
+        │   ├── Binance/
+        │   │   ├── BinanceClient.cs
+        │   │   ├── Models/
+        │   │   └── Mappers/
+        │   │       └── BinanceMapper.cs
+        │   ├── CoinGecko/
+        │   │   ├── CoinGeckoClient.cs
+        │   │   ├── Models/
+        │   │   └── Mappers/
+        │   │       └── CoinGeckoMapper.cs
+        │   └── PythonMl/
+        │       └── PythonMlClient.cs
+        │
+        ├── BackgroundJobs/
+        │   ├── DailyPriceSyncJob.cs
+        │   ├── MarketSnapshotSyncJob.cs
+        │   └── MetadataRefreshJob.cs
+        │
+        └── DependencyInjection/
+            └── InfrastructureServiceRegistration.cs

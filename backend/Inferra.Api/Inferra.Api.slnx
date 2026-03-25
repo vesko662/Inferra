@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Inferra.Api/Inferra.Api.csproj" />
+  <Project Path="Inferra.Application/Inferra.Application.csproj" />
+  <Project Path="Inferra.Domain/Inferra.Domain.csproj" />
+  <Project Path="Inferra.Infrastructure/Inferra.Infrastructure.csproj" />
+</Solution>
