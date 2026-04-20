@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inferra.Domain.Entities
 {
@@ -24,9 +22,11 @@ namespace Inferra.Domain.Entities
 
         public string? CoinGeckoId { get; set; }
         public string? ImageUrl { get; set; }
-
+        [Precision(38, 8)]
         public decimal? CirculatingSupply { get; set; }
+        [Precision(38, 8)]
         public decimal? TotalSupply { get; set; }
+        [Precision(38, 8)]
         public decimal? MaxSupply { get; set; }
 
         public ICollection<DailyCandle> DailyCandles { get; set; } = new List<DailyCandle>();

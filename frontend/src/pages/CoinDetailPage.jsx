@@ -1,0 +1,198 @@
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import ErrorMessage from "../components/common/ErrorMessage";
+import LoadingState from "../components/common/LoadingState";
+import CandleChart from "../components/crypto/CandleChart";
+import DetailField from "../components/crypto/DetailField";
+import PricePanel from "../components/crypto/PricePanel";
+import useAssetCandles from "../hooks/useAssetCandles";
+import useCoinDetails from "../hooks/useCoinDetails";
+import { getAssetDisplayLabel, getAssetRouteKey } from "../utils/assetMappers";
+import { formatCompactNumber, formatDateTime, formatRelativeTime } from "../utils/formatters";
+
+const chartRanges = [
+  { value: "all", label: "All" },
+  { value: 90, label: "90d" },
+  { value: 30, label: "30d" },
+  { value: 7, label: "7d" }
+];
+const chartModes = [
+  { value: "simple", label: "Simple" },
+  { value: "advanced", label: "Advanced" }
+];
+
+function CoinDetailPage() {
+  const { symbol } = useParams();
+  const [selectedRange, setSelectedRange] = useState("all");
+  const [chartMode, setChartMode] = useState("simple");
+  const { asset, snapshot, isLoading, error, lastUpdated, refresh } = useCoinDetails(symbol);
+  const {
+    candles,
+    error: candlesError,
+    isLoading: candlesLoading
+  } = useAssetCandles(symbol, selectedRange);
+
+  if (isLoading) {
+    return (
+      <div className="container page-section">
+        <LoadingState label="Loading coin details..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container page-section">
+        <ErrorMessage
+          title="Unable to load coin details"
+          message={error}
+          actionLabel="Try again"
+          onAction={refresh}
+        />
+      </div>
+    );
+  }
+
+  if (!asset) {
+    return (
+      <div className="container page-section">
+        <ErrorMessage
+          title="Asset not found"
+          message="The requested asset could not be found."
+        />
+      </div>
+    );
+  }
+
+  const assetLabel = getAssetDisplayLabel(asset);
+  const routeKey = getAssetRouteKey(asset) || symbol;
+
+  return (
+    <div className="page">
+      <section className="container page-heading page-heading--detail">
+        <div>
+          <Link className="text-link" to="/coins">
+            Back to markets
+          </Link>
+          <div className="eyebrow">{routeKey}</div>
+          <h1>{assetLabel}</h1>
+          <p>
+            A dedicated asset page that keeps current market snapshot data separate from historical
+            trend visualization.
+          </p>
+        </div>
+
+        <div className="page-heading__meta">
+          <span className="meta-chip">Last refreshed {formatRelativeTime(lastUpdated)}</span>
+          <button className="button button--ghost" type="button" onClick={refresh}>
+            Refresh now
+          </button>
+        </div>
+      </section>
+
+      <section className="container detail-grid">
+        <PricePanel snapshot={snapshot} />
+
+        <article className="surface-card detail-card">
+          <header className="section-header">
+            <div>
+              <h2>Asset details</h2>
+              <p>Core asset information and supply metrics.</p>
+            </div>
+          </header>
+
+          <div className="asset-overview">
+            {asset.imageUrl ? (
+              <img className="asset-overview__logo" src={asset.imageUrl} alt={`${assetLabel} logo`} />
+            ) : (
+              <div className="asset-overview__logo asset-overview__logo--fallback" aria-hidden="true">
+                {(routeKey || "?").slice(0, 1)}
+              </div>
+            )}
+
+            <div>
+              <h2 className="asset-overview__title">{assetLabel}</h2>
+              <p className="asset-overview__meta">
+                {asset.symbol || "No symbol"} {asset.pairSymbol ? `| ${asset.pairSymbol}` : ""}
+              </p>
+            </div>
+          </div>
+
+          <div className="detail-fields">
+            <DetailField label="Circulating supply" value={formatCompactNumber(asset.circulatingSupply)} />
+            <DetailField label="Total supply" value={formatCompactNumber(asset.totalSupply)} />
+            <DetailField label="Max supply" value={formatCompactNumber(asset.maxSupply)} />
+            <DetailField
+              label="Snapshot timestamp"
+              value={snapshot?.updatedAt ? formatDateTime(snapshot.updatedAt) : "N/A"}
+            />
+          </div>
+        </article>
+
+        <article className="surface-card detail-card detail-card--wide">
+          <header className="section-header">
+            <div>
+              <h2>Price history</h2>
+              <p>Use a simple line for fast reading or switch to candlesticks for OHLC detail.</p>
+            </div>
+
+            <div className="section-header__actions">
+              {chartModes.map((mode) => (
+                <button
+                  key={mode.value}
+                  className={mode.value === chartMode ? "button button--primary" : "button button--ghost"}
+                  type="button"
+                  onClick={() => setChartMode(mode.value)}
+                >
+                  {mode.label}
+                </button>
+              ))}
+              {chartRanges.map((range) => (
+                <button
+                  key={range.value}
+                  className={range.value === selectedRange ? "button button--primary" : "button button--ghost"}
+                  type="button"
+                  onClick={() => setSelectedRange(range.value)}
+                >
+                  {range.label}
+                </button>
+              ))}
+            </div>
+          </header>
+
+          {candlesLoading ? <LoadingState label="Loading historical candles..." /> : null}
+          {!candlesLoading && candlesError ? (
+            <ErrorMessage title="Unable to load historical chart data" message={candlesError} />
+          ) : null}
+          {!candlesLoading && !candlesError ? <CandleChart candles={candles} mode={chartMode} /> : null}
+        </article>
+
+        <article className="surface-card detail-card detail-card--wide">
+          <header className="section-header">
+            <div>
+              <h2>Market context</h2>
+              <p>Live snapshot values and historical candles work together, but remain separate.</p>
+            </div>
+          </header>
+
+          <div className="feature-grid">
+            <div className="feature-tile">
+              <strong>Snapshot data</strong>
+              <p>Used for current price, daily move, market cap, volume, and last updated time.</p>
+            </div>
+            <div className="feature-tile">
+              <strong>Candle data</strong>
+              <p>Used only for chart history, range selection, and trend visualization.</p>
+            </div>
+            <div className="feature-tile">
+              <strong>Future expansion</strong>
+              <p>Add favorites, alerts, comparisons, or richer analytics without changing the page model.</p>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+  );
+}
+
+export default CoinDetailPage;

@@ -426,3 +426,22 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# =========================
+# Frontend (Vite)
+# =========================
+frontend/dist/
+frontend/.env.local
+frontend/.env.*.local
+frontend/.vite/
+frontend/coverage/
+
+# =========================
+# Docker / local overrides
+# =========================
+docker-compose.override.yml
+
+# Local container data (uncomment if you create these)
+# postgres_data/
+# redis_data/
+# uploads/
