@@ -3,6 +3,7 @@ import {
   normalizeCandle,
   normalizeAssetDetails,
   normalizeAssetListItem,
+  normalizeForecast,
   normalizeSnapshot
 } from "../utils/assetMappers";
 import httpClient from "./httpClient";
@@ -50,4 +51,20 @@ export async function getAssetCandles(symbol, options = {}) {
   const response = await httpClient(path);
 
   return Array.isArray(response) ? response.map(normalizeCandle).filter(Boolean) : [];
+}
+
+export async function getLatestAssetForecast(symbol) {
+  if (!symbol) {
+    throw new Error("A symbol is required.");
+  }
+
+  const response = await httpClient(
+    `${API_ENDPOINTS.assets}/${encodeURIComponent(symbol)}/forecast/latest`
+  );
+
+  if (!response || !Array.isArray(response.forecasts) || response.forecasts.length === 0) {
+    return [];
+  }
+
+  return response.forecasts.map(normalizeForecast).filter(Boolean);
 }

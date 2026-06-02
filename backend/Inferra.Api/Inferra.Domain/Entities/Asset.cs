@@ -29,7 +29,11 @@ namespace Inferra.Domain.Entities
         [Precision(38, 8)]
         public decimal? MaxSupply { get; set; }
 
+        public bool IsMlEnabled { get; set; }
+
         public ICollection<DailyCandle> DailyCandles { get; set; } = new List<DailyCandle>();
+        public ICollection<ForecastRun> ForecastRuns { get; set; } = new List<ForecastRun>();
+
         public MarketSnapshot? MarketSnapshot { get; set; }
     }
 }

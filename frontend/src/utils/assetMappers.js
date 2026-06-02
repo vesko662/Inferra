@@ -42,6 +42,36 @@ export function normalizeCandle(rawCandle) {
   };
 }
 
+export function normalizeForecastPoint(rawPoint) {
+  if (!rawPoint || typeof rawPoint !== "object") {
+    return null;
+  }
+
+  return {
+    dayOffset: toNullableNumber(rawPoint.dayOffset),
+    targetDate: toSafeString(rawPoint.targetDate),
+    predictedPrice: toNullableNumber(rawPoint.predictedPrice)
+  };
+}
+
+export function normalizeForecast(rawForecast) {
+  if (!rawForecast || typeof rawForecast !== "object") {
+    return null;
+  }
+
+  return {
+    modelType: toSafeString(rawForecast.modelType),
+    modelVersion: toSafeString(rawForecast.modelVersion),
+    generatedAt: toSafeString(rawForecast.generatedAt),
+    forecastStartDate: toSafeString(rawForecast.forecastStartDate),
+    forecastEndDate: toSafeString(rawForecast.forecastEndDate),
+    horizonDays: toNullableNumber(rawForecast.horizonDays),
+    points: Array.isArray(rawForecast.points)
+      ? rawForecast.points.map(normalizeForecastPoint).filter(Boolean)
+      : []
+  };
+}
+
 export function normalizeAssetListItem(rawAsset) {
   return {
     id: toNullableNumber(rawAsset?.id),

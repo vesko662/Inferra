@@ -40,6 +40,9 @@ namespace Inferra.Infrastructure.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsMlEnabled")
+                        .HasColumnType("bit");
+
                     b.Property<decimal?>("MaxSupply")
                         .HasPrecision(38, 8)
                         .HasColumnType("decimal(38,8)");
@@ -111,6 +114,93 @@ namespace Inferra.Infrastructure.Migrations
                     b.ToTable("DailyCandles");
                 });
 
+            modelBuilder.Entity("Inferra.Domain.Entities.ForecastPoint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal?>("Confidence")
+                        .HasPrecision(10, 6)
+                        .HasColumnType("decimal(10,6)");
+
+                    b.Property<int>("DayOffset")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ForecastRunId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("LowerBound")
+                        .HasPrecision(18, 8)
+                        .HasColumnType("decimal(18,8)");
+
+                    b.Property<decimal>("PredictedPrice")
+                        .HasPrecision(18, 8)
+                        .HasColumnType("decimal(18,8)");
+
+                    b.Property<DateOnly>("TargetDate")
+                        .HasColumnType("date");
+
+                    b.Property<decimal?>("UpperBound")
+                        .HasPrecision(18, 8)
+                        .HasColumnType("decimal(18,8)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ForecastRunId", "DayOffset")
+                        .IsUnique();
+
+                    b.HasIndex("ForecastRunId", "TargetDate")
+                        .IsUnique();
+
+                    b.ToTable("ForecastPoints");
+                });
+
+            modelBuilder.Entity("Inferra.Domain.Entities.ForecastRun", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssetId")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("ForecastEndDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("ForecastStartDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("GeneratedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HorizonDays")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsLatest")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ModelType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModelVersion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId", "ModelType", "GeneratedAt");
+
+                    b.HasIndex("AssetId", "ModelType", "IsLatest");
+
+                    b.ToTable("ForecastRuns");
+                });
+
             modelBuilder.Entity("Inferra.Domain.Entities.MarketSnapshot", b =>
                 {
                     b.Property<int>("Id")
@@ -162,6 +252,28 @@ namespace Inferra.Infrastructure.Migrations
                     b.Navigation("Asset");
                 });
 
+            modelBuilder.Entity("Inferra.Domain.Entities.ForecastPoint", b =>
+                {
+                    b.HasOne("Inferra.Domain.Entities.ForecastRun", "ForecastRun")
+                        .WithMany("Points")
+                        .HasForeignKey("ForecastRunId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ForecastRun");
+                });
+
+            modelBuilder.Entity("Inferra.Domain.Entities.ForecastRun", b =>
+                {
+                    b.HasOne("Inferra.Domain.Entities.Asset", "Asset")
+                        .WithMany("ForecastRuns")
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
+                });
+
             modelBuilder.Entity("Inferra.Domain.Entities.MarketSnapshot", b =>
                 {
                     b.HasOne("Inferra.Domain.Entities.Asset", "Asset")
@@ -177,7 +289,14 @@ namespace Inferra.Infrastructure.Migrations
                 {
                     b.Navigation("DailyCandles");
 
+                    b.Navigation("ForecastRuns");
+
                     b.Navigation("MarketSnapshot");
+                });
+
+            modelBuilder.Entity("Inferra.Domain.Entities.ForecastRun", b =>
+                {
+                    b.Navigation("Points");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,6 +6,7 @@ import CandleChart from "../components/crypto/CandleChart";
 import DetailField from "../components/crypto/DetailField";
 import PricePanel from "../components/crypto/PricePanel";
 import useAssetCandles from "../hooks/useAssetCandles";
+import useAssetForecast from "../hooks/useAssetForecast";
 import useCoinDetails from "../hooks/useCoinDetails";
 import { getAssetDisplayLabel, getAssetRouteKey } from "../utils/assetMappers";
 import { formatCompactNumber, formatDateTime, formatRelativeTime } from "../utils/formatters";
@@ -31,6 +32,7 @@ function CoinDetailPage() {
     error: candlesError,
     isLoading: candlesLoading
   } = useAssetCandles(symbol, selectedRange);
+  const { forecast } = useAssetForecast(symbol);
 
   if (isLoading) {
     return (
@@ -164,7 +166,9 @@ function CoinDetailPage() {
           {!candlesLoading && candlesError ? (
             <ErrorMessage title="Unable to load historical chart data" message={candlesError} />
           ) : null}
-          {!candlesLoading && !candlesError ? <CandleChart candles={candles} mode={chartMode} /> : null}
+          {!candlesLoading && !candlesError ? (
+            <CandleChart candles={candles} snapshot={snapshot} forecastModels={forecast} mode={chartMode} />
+          ) : null}
         </article>
 
         <article className="surface-card detail-card detail-card--wide">

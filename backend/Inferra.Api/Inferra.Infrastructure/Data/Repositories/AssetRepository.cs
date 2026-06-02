@@ -46,7 +46,25 @@ namespace Inferra.Infrastructure.Data.Repositories
         {
             return _context.Assets.FirstOrDefaultAsync(a => a.Symbol == symbol);
         }
+        public Task<List<Asset>> GetTopByHistoryLengthAsync(int count)
+        {
+            return _context.Assets
+                .AsNoTracking()
+                .Where(a => a.DailyCandles.Any())
+                .OrderByDescending(a => a.DailyCandles.Count)
+                .ThenBy(a => a.Symbol)
+                .Take(count)
+                .ToListAsync();
+        }
 
+        public Task<List<Asset>> GetMlAssetsAsync()
+        {
+            return _context.Assets
+                .AsNoTracking()
+                .Where(x => x.IsMlEnabled)
+                .OrderBy(x => x.Symbol)
+                .ToListAsync();
+        }
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

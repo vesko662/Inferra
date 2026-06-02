@@ -6,6 +6,7 @@ using Inferra.Infrastructure.Data;
 using Inferra.Infrastructure.Data.Repositories;
 using Inferra.Infrastructure.Data.Seed;
 using Inferra.Infrastructure.Integrations.Binance;
+using Inferra.Infrastructure.Integrations.MlClient.Inferra.Infrastructure.Integrations.Ml;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,9 +48,20 @@ namespace Inferra.Infrastructure.DependencyInjection
             services.AddScoped<IAssetRepository, AssetRepository>();
             services.AddScoped<IDailyCandleRepository, DailyCandleRepository>();
             services.AddScoped<IMarketSnapshotRepository, MarketSnapshotRepository>();
+            services.AddScoped<IForecastRunRepository, ForecastRunRepository>();
 
             services.AddHostedService<MarketSnapshotJob>();
+            services.AddHostedService<DailyCandleUpdateJob>();
 
+
+            services.AddHttpClient<IMlClient, MlClient>(client =>
+            {
+                client.BaseAddress = new Uri(
+                    configuration["MlService:BaseUrl"]!);
+            });
+
+            //   services.AddHostedService<MlTrainingJob>();
+            //services.AddHostedService<MlPredictionJob>();
 
             return services;
 

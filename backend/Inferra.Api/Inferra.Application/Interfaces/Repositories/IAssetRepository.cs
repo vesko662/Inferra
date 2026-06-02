@@ -14,6 +14,9 @@ namespace Inferra.Application.Interfaces.Repositories
         Task<List<Asset>> GetAllAsync();
         Task AddAsync(Asset token);
         Task AddRangeAsync(IEnumerable<Asset> tokens);
+        Task<List<Asset>> GetTopByHistoryLengthAsync(int count);
+
+        Task<List<Asset>> GetMlAssetsAsync();
         Task SaveChangesAsync();
     }
 }

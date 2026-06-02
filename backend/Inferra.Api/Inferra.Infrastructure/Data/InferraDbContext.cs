@@ -16,6 +16,8 @@ namespace Inferra.Infrastructure.Data
         public DbSet<Asset> Assets => Set<Asset>();
         public DbSet<DailyCandle> DailyCandles => Set<DailyCandle>();
         public DbSet<MarketSnapshot> MarketSnapshots => Set<MarketSnapshot>();
+        public DbSet<ForecastRun> ForecastRuns => Set<ForecastRun>();
+        public DbSet<ForecastPoint> ForecastPoints => Set<ForecastPoint>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
