@@ -13,15 +13,18 @@ namespace Inferra.Application.Services
         private readonly IAssetRepository _assetRepository;
         private readonly IDailyCandleRepository _dailyCandleRepository;
         private readonly IMarketSnapshotRepository _marketSnapshotRepository;
+        private readonly ISentimentSnapshotRepository _sentimentSnapshotRepository;
 
         public AssetQueryService(
             IAssetRepository assetRepository,
             IDailyCandleRepository dailyCandleRepository,
-            IMarketSnapshotRepository marketSnapshotRepository)
+            IMarketSnapshotRepository marketSnapshotRepository,
+            ISentimentSnapshotRepository sentimentSnapshotRepository)
         {
             _assetRepository = assetRepository;
             _dailyCandleRepository = dailyCandleRepository;
             _marketSnapshotRepository = marketSnapshotRepository;
+            _sentimentSnapshotRepository = sentimentSnapshotRepository;
         }
 
         public async Task<IReadOnlyList<AssetListItemDto>> GetAssetsAsync()
@@ -76,6 +79,23 @@ namespace Inferra.Application.Services
             return candles
                 .Select(MapCandle)
                 .ToList();
+        }
+
+        public async Task<SentimentSnapshotDto?> GetSentimentBySymbolAsync(string symbol)
+        {
+            var asset = await _assetRepository.GetBySymbolAsync(NormalizeSymbol(symbol));
+            if (asset is null) return null;
+
+            var snapshot = await _sentimentSnapshotRepository.GetByAssetIdAsync(asset.Id);
+            if (snapshot is null) return null;
+
+            return new SentimentSnapshotDto
+            {
+                Bullish = snapshot.Bullish,
+                Bearish = snapshot.Bearish,
+                Neutral = snapshot.Neutral,
+                GeneratedAt = snapshot.GeneratedAt
+            };
         }
 
         private static string NormalizeSymbol(string symbol)

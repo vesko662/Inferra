@@ -14,3 +14,22 @@ POST http://127.0.0.1:8000/predict-daily
 Content-Type: application/json
 
 ###
+
+POST http://127.0.0.1:8000/sentiment/train
+Content-Type: application/json
+
+###
+
+POST http://127.0.0.1:8000/sentiment/predict
+Content-Type: application/json
+
+{
+  "symbol": "BTC",
+  "texts": [
+    "Bitcoin surges to new all-time high as institutional demand grows.",
+    "Crypto market crashes amid regulatory crackdown fears.",
+    "Trading volumes remain stable with no major price movements."
+  ]
+}
+
+###

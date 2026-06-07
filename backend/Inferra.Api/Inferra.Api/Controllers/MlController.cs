@@ -12,11 +12,16 @@ namespace Inferra.Api.Controllers
     {
         private readonly IForecastIngestionService _forecastIngestionService;
         private readonly IMlDatasetService _mlDatasetService;
+        private readonly INewsSentimentService _newsSentimentService;
 
-        public MlController(IForecastIngestionService forecastIngestionService, IMlDatasetService mlDatasetService)
+        public MlController(
+            IForecastIngestionService forecastIngestionService,
+            IMlDatasetService mlDatasetService,
+            INewsSentimentService newsSentimentService)
         {
             _forecastIngestionService = forecastIngestionService;
-                _mlDatasetService = mlDatasetService;
+            _mlDatasetService = mlDatasetService;
+            _newsSentimentService = newsSentimentService;
         }
         [HttpGet("datasets/training")]
         public async Task<IActionResult> GetTrainingDataset()
@@ -49,5 +54,12 @@ namespace Inferra.Api.Controllers
 
             return Ok(new { message = "Daily forecasts saved successfully." });
         }
-    }   
+
+        [HttpGet("sentiment")]
+        public async Task<IActionResult> GetSentiment()
+        {
+            var result = await _newsSentimentService.GetSentimentAsync();
+            return Ok(result);
+        }
+    }
 }

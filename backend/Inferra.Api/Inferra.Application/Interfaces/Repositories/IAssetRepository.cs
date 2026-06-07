@@ -17,6 +17,7 @@ namespace Inferra.Application.Interfaces.Repositories
         Task<List<Asset>> GetTopByHistoryLengthAsync(int count);
 
         Task<List<Asset>> GetMlAssetsAsync();
+        Task<List<Asset>> GetNewsAssetsAsync();
         Task SaveChangesAsync();
     }
 }

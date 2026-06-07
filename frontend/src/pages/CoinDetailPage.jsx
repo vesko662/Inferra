@@ -5,8 +5,10 @@ import LoadingState from "../components/common/LoadingState";
 import CandleChart from "../components/crypto/CandleChart";
 import DetailField from "../components/crypto/DetailField";
 import PricePanel from "../components/crypto/PricePanel";
+import SentimentGauge from "../components/crypto/SentimentGauge";
 import useAssetCandles from "../hooks/useAssetCandles";
 import useAssetForecast from "../hooks/useAssetForecast";
+import useAssetSentiment from "../hooks/useAssetSentiment";
 import useCoinDetails from "../hooks/useCoinDetails";
 import { getAssetDisplayLabel, getAssetRouteKey } from "../utils/assetMappers";
 import { formatCompactNumber, formatDateTime, formatRelativeTime } from "../utils/formatters";
@@ -33,6 +35,7 @@ function CoinDetailPage() {
     isLoading: candlesLoading
   } = useAssetCandles(symbol, selectedRange);
   const { forecast } = useAssetForecast(symbol);
+  const { sentiment, isLoading: sentimentLoading } = useAssetSentiment(symbol);
 
   if (isLoading) {
     return (
@@ -129,6 +132,23 @@ function CoinDetailPage() {
               value={snapshot?.updatedAt ? formatDateTime(snapshot.updatedAt) : "N/A"}
             />
           </div>
+        </article>
+
+        <article className="surface-card detail-card">
+          <header className="section-header">
+            <div>
+              <h2>News sentiment</h2>
+              <p>Aggregated bullish / bearish signal from recent news articles.</p>
+            </div>
+          </header>
+
+          {sentimentLoading && <LoadingState label="Loading sentiment..." />}
+          {!sentimentLoading && !sentiment && (
+            <p style={{ color: "var(--color-text-muted)", fontSize: "0.875rem" }}>
+              No sentiment data available yet.
+            </p>
+          )}
+          {!sentimentLoading && sentiment && <SentimentGauge sentiment={sentiment} />}
         </article>
 
         <article className="surface-card detail-card detail-card--wide">

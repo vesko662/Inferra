@@ -30,10 +30,12 @@ namespace Inferra.Domain.Entities
         public decimal? MaxSupply { get; set; }
 
         public bool IsMlEnabled { get; set; }
+        public bool IsNewsEnabled { get; set; }
 
         public ICollection<DailyCandle> DailyCandles { get; set; } = new List<DailyCandle>();
         public ICollection<ForecastRun> ForecastRuns { get; set; } = new List<ForecastRun>();
 
         public MarketSnapshot? MarketSnapshot { get; set; }
+        public SentimentSnapshot? SentimentSnapshot { get; set; }
     }
 }

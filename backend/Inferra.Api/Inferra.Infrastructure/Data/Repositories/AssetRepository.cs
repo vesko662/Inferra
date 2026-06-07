@@ -65,6 +65,16 @@ namespace Inferra.Infrastructure.Data.Repositories
                 .OrderBy(x => x.Symbol)
                 .ToListAsync();
         }
+
+        public Task<List<Asset>> GetNewsAssetsAsync()
+        {
+            return _context.Assets
+                .AsNoTracking()
+                .Where(x => x.IsNewsEnabled)
+                .OrderBy(x => x.Symbol)
+                .ToListAsync();
+        }
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

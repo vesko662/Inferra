@@ -41,6 +41,7 @@ class Settings:
     model_version: str = os.getenv("MODEL_VERSION", "v1")
     log_level: str = os.getenv("LOG_LEVEL", "INFO")
     run_pipelines_in_background: bool = os.getenv("RUN_PIPELINES_IN_BACKGROUND", "true").lower() == "true"
+    sentiment_data_path: Path = BASE_DIR / os.getenv("SENTIMENT_DATA_PATH", "data/sentiment/train-00000-of-00001.parquet")
     enabled_models: list[str] = [
         model.strip()
         for model in os.getenv("ENABLED_MODELS", "LinearRegression,XGBoost,LSTM").split(",")

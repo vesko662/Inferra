@@ -4,6 +4,7 @@ using Inferra.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inferra.Infrastructure.Migrations
 {
     [DbContext(typeof(InferraDbContext))]
-    partial class InferraDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260607214623_AddedNewsSnapshotTable")]
+    partial class AddedNewsSnapshotTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,9 +44,6 @@ namespace Inferra.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsMlEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsNewsEnabled")
                         .HasColumnType("bit");
 
                     b.Property<decimal?>("MaxSupply")

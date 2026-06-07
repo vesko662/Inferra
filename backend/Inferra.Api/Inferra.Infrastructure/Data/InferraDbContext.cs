@@ -18,6 +18,7 @@ namespace Inferra.Infrastructure.Data
         public DbSet<MarketSnapshot> MarketSnapshots => Set<MarketSnapshot>();
         public DbSet<ForecastRun> ForecastRuns => Set<ForecastRun>();
         public DbSet<ForecastPoint> ForecastPoints => Set<ForecastPoint>();
+        public DbSet<SentimentSnapshot> SentimentSnapshots => Set<SentimentSnapshot>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +42,15 @@ namespace Inferra.Infrastructure.Data
                 .HasOne(x => x.Asset)
                 .WithOne(x => x.MarketSnapshot)
                 .HasForeignKey<MarketSnapshot>(x => x.AssetId);
+
+            modelBuilder.Entity<SentimentSnapshot>()
+                .HasIndex(x => x.AssetId)
+                .IsUnique();
+
+            modelBuilder.Entity<SentimentSnapshot>()
+                .HasOne(x => x.Asset)
+                .WithOne(x => x.SentimentSnapshot)
+                .HasForeignKey<SentimentSnapshot>(x => x.AssetId);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Inferra.Application.Models.News;
 
 namespace Inferra.Application.Interfaces.Integrations
 {
@@ -8,5 +6,6 @@ namespace Inferra.Application.Interfaces.Integrations
     {
         Task TriggerTrainingAsync(CancellationToken cancellationToken = default);
         Task TriggerDailyPredictionAsync(CancellationToken cancellationToken = default);
+        Task<List<AssetSentimentDto>> GetSentimentAsync(List<NewsSentimentRequest> request, CancellationToken cancellationToken = default);
     }
 }

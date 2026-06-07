@@ -428,6 +428,19 @@ FodyWeavers.xsd
 *.msp
 
 # =========================
+# ML Service
+# =========================
+ml-service/.venv/
+ml-service/.idea/
+ml-service/models/
+
+# Trained model artifacts
+*.joblib
+*.pkl
+*.keras
+*.h5
+
+# =========================
 # Frontend (Vite)
 # =========================
 frontend/dist/

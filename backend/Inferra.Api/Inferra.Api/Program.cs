@@ -32,7 +32,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var seeder = scope.ServiceProvider.GetRequiredService<AssetsSeeder>();
-   // await seeder.SeedAsync();
+    //await seeder.SeedAsync();
 }
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

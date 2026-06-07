@@ -1,5 +1,4 @@
-﻿// File: Inferra.Infrastructure/Data/Seed/AssetsSeeder.cs
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -93,6 +92,13 @@ namespace Inferra.Infrastructure.Data.Seed
         private async Task SeedDailyCandlesForAssetAsync(Asset asset)
         {
             var lastSavedDate = await _dailyCandleRepository.GetLastDateByAssetIdAsync(asset.Id);
+
+            var yesterday = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(-1);
+            if (lastSavedDate.HasValue && lastSavedDate.Value >= yesterday)
+            {
+                return;
+            }
+
             var startTimeUtc = BuildStartTimeUtc(lastSavedDate);
 
             while (true)

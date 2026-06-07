@@ -53,6 +53,23 @@ export async function getAssetCandles(symbol, options = {}) {
   return Array.isArray(response) ? response.map(normalizeCandle).filter(Boolean) : [];
 }
 
+export async function getAssetSentiment(symbol) {
+  if (!symbol) {
+    throw new Error("A symbol is required.");
+  }
+
+  const response = await httpClient(
+    `${API_ENDPOINTS.assets}/${encodeURIComponent(symbol)}/sentiment`
+  );
+
+  return {
+    bullish: response.bullish ?? 0,
+    bearish: response.bearish ?? 0,
+    neutral: response.neutral ?? 0,
+    generatedAt: response.generatedAt ?? null
+  };
+}
+
 export async function getLatestAssetForecast(symbol) {
   if (!symbol) {
     throw new Error("A symbol is required.");

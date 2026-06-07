@@ -11,5 +11,6 @@ namespace Inferra.Application.Interfaces.Services
         Task<AssetDetailsDto?> GetAssetBySymbolAsync(string symbol);
         Task<MarketSnapshotDto?> GetLatestSnapshotBySymbolAsync(string symbol);
         Task<IReadOnlyList<DailyCandleDto>?> GetCandlesBySymbolAsync(string symbol, DateOnly? from, DateOnly? to);
+        Task<SentimentSnapshotDto?> GetSentimentBySymbolAsync(string symbol);
     }
 }
