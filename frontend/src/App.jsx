@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import AppLayout from "./layouts/AppLayout";
+import AboutPage from "./pages/AboutPage";
 import CoinDetailPage from "./pages/CoinDetailPage";
 import CoinsPage from "./pages/CoinsPage";
 import DashboardPage from "./pages/DashboardPage";
@@ -12,6 +13,7 @@ function App() {
         <Route index element={<DashboardPage />} />
         <Route path="coins" element={<CoinsPage />} />
         <Route path="coins/:symbol" element={<CoinDetailPage />} />
+        <Route path="about" element={<AboutPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

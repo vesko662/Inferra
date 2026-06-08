@@ -59,11 +59,11 @@ namespace Inferra.Infrastructure.DependencyInjection
 
             services.AddHttpClient<IMlClient, MlClient>(client =>
             {
-                client.BaseAddress = new Uri(
-                    configuration["MlService:BaseUrl"]!);
+                client.BaseAddress = new Uri(configuration["MlService:BaseUrl"]!);
+                client.DefaultRequestHeaders.Add("X-Api-Key", configuration["MlService:ApiKey"]);
             });
 
-            //   services.AddHostedService<MlTrainingJob>();
+            //services.AddHostedService<MlTrainingJob>();
             //services.AddHostedService<MlPredictionJob>();
 
             var newsApiBaseUrl = configuration["Integrations:NewsApi:BaseUrl"]
@@ -85,7 +85,7 @@ namespace Inferra.Infrastructure.DependencyInjection
                 return new InferraNewsApiClient(httpClient, newsApiKey);
             });
 
-            //services.AddHostedService<NewsSentimentJob>();
+            services.AddHostedService<NewsSentimentJob>();
             return services;
 
         }

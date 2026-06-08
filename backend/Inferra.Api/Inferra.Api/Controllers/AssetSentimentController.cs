@@ -1,11 +1,13 @@
 using Inferra.Api.Models;
 using Inferra.Application.Interfaces.Services;
 using Inferra.Application.Models.Assets;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inferra.Api.Controllers
 {
+    [Authorize]
     [Route("api/assets/{symbol}/sentiment")]
     [ApiController]
     public class AssetSentimentController : ControllerBase

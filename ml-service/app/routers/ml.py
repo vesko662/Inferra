@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import logging
 
-from fastapi import APIRouter, BackgroundTasks, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 
 from app.clients.dotnet_api_client import DotNetApiClient
 from app.core import settings
+from app.dependencies import verify_api_key
 from app.schemas.jobs import JobResponse, TriggerResponse
 from app.services.job_registry import job_registry
 from app.services.model_store import ModelStore
@@ -17,7 +18,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(tags=["ML pipelines"])
 
 
-@router.post("/train", response_model=TriggerResponse)
+@router.post("/train", response_model=TriggerResponse, dependencies=[Depends(verify_api_key)])
 async def train(background_tasks: BackgroundTasks) -> TriggerResponse:
     job_id, created = job_registry.create_or_get_active("training")
     if not created:
@@ -45,7 +46,7 @@ async def train(background_tasks: BackgroundTasks) -> TriggerResponse:
     )
 
 
-@router.post("/predict-daily", response_model=TriggerResponse)
+@router.post("/predict-daily", response_model=TriggerResponse, dependencies=[Depends(verify_api_key)])
 async def predict_daily(background_tasks: BackgroundTasks) -> TriggerResponse:
     job_id, created = job_registry.create_or_get_active("daily-prediction")
     if not created:

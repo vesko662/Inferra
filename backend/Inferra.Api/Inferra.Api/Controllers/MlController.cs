@@ -1,4 +1,5 @@
-﻿using Inferra.Application.Interfaces.Services;
+﻿using Inferra.Api.Filters;
+using Inferra.Application.Interfaces.Services;
 using Inferra.Application.Models.Forecasts;
 using Inferra.Application.Services;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ namespace Inferra.Api.Controllers
 {
     [Route("api/ml")]
     [ApiController]
+    [ApiKey]
     public class MlController : ControllerBase
     {
         private readonly IForecastIngestionService _forecastIngestionService;

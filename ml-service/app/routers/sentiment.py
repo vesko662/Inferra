@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import logging
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
+from app.dependencies import verify_api_key
 from app.schemas.jobs import PipelineRunResult
 from app.schemas.sentiment import SentimentPredictRequest, SentimentPredictResponse
 from app.services.model_store import ModelStore
@@ -14,13 +15,13 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/sentiment", tags=["Sentiment"])
 
 
-@router.post("/train", response_model=PipelineRunResult)
+@router.post("/train", response_model=PipelineRunResult, dependencies=[Depends(verify_api_key)])
 async def train_sentiment() -> PipelineRunResult:
     service = SentimentTrainingService(ModelStore())
     return service.train()
 
 
-@router.post("/predict", response_model=list[SentimentPredictResponse])
+@router.post("/predict", response_model=list[SentimentPredictResponse], dependencies=[Depends(verify_api_key)])
 async def predict_sentiment(requests: list[SentimentPredictRequest]) -> list[SentimentPredictResponse]:
     if not requests:
         raise HTTPException(status_code=422, detail="requests list must not be empty.")

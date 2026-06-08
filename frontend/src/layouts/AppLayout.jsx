@@ -1,9 +1,10 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
 const navItems = [
-  { to: "/", label: "Dashboard" },
-  { to: "/coins", label: "Markets" }
+  { to: "/", label: "Overview" },
+  { to: "/coins", label: "Markets" },
+  { to: "/about", label: "About" }
 ];
 
 function AppLayout() {
@@ -27,6 +28,7 @@ function AppLayout() {
               <NavLink
                 key={item.to}
                 to={item.to}
+                end={item.to === "/"}
                 className={({ isActive }) =>
                   isActive ? "main-nav__link main-nav__link--active" : "main-nav__link"
                 }
@@ -66,6 +68,24 @@ function AppLayout() {
       <main className="app-main">
         <Outlet />
       </main>
+
+      <footer className="app-footer">
+        <div className="app-footer__inner container">
+          <Link to="/" className="footer-brand">
+            <span className="brand__mark brand__mark--sm">I</span>
+            <strong>Inferra</strong>
+          </Link>
+
+          <nav className="footer-nav" aria-label="Footer navigation">
+            <Link to="/coins" className="footer-nav__link">Markets</Link>
+            <Link to="/about" className="footer-nav__link">About</Link>
+          </nav>
+
+          <p className="footer-credits">
+            Data by <span>Binance</span> &amp; <span>CoinGecko</span>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

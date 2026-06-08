@@ -9,8 +9,8 @@ function DashboardPage() {
           <div className="eyebrow">Real-time market visibility</div>
           <h1>Track the crypto market with a clean, focused dashboard.</h1>
           <p>
-            Inferra now has a scalable frontend foundation wired around the confirmed Swagger
-            endpoints for assets, per-asset details, and latest snapshots.
+            Live prices, ML-powered forecasts, and news sentiment — all in one place.
+            Inferra gives you a sharper view of the market without the noise.
           </p>
 
           <div className="hero__actions">
@@ -26,26 +26,26 @@ function DashboardPage() {
 
       <section className="container stats-grid" aria-label="Platform highlights">
         <article className="surface-card stat-card">
-          <span className="stat-card__label">Refresh cadence</span>
-          <strong>Every 5 minutes</strong>
-          <p>Price data is designed to auto-refresh on an interval for consistent monitoring.</p>
+          <span className="stat-card__label">Price data</span>
+          <strong>Real-time snapshots</strong>
+          <p>Live prices, 24h change, volume, and market cap refreshed every few minutes from Binance.</p>
         </article>
         <article className="surface-card stat-card">
-          <span className="stat-card__label">API layer</span>
-          <strong>Swagger-aligned</strong>
-          <p>Only confirmed endpoints are used, with response rendering kept generic and safe.</p>
+          <span className="stat-card__label">ML forecasts</span>
+          <strong>3 prediction models</strong>
+          <p>Linear Regression, LSTM, and XGBoost generate multi-day price forecasts from historical data.</p>
         </article>
         <article className="surface-card stat-card">
-          <span className="stat-card__label">Future-ready detail views</span>
-          <strong>Extensible pages</strong>
-          <p>Detail screens are structured to support candles, watchlists, and richer KPI panels.</p>
+          <span className="stat-card__label">Sentiment</span>
+          <strong>News-driven signals</strong>
+          <p>Headlines are classified as bullish, bearish, or neutral to surface the current market mood.</p>
         </article>
       </section>
 
       <section id="market-overview" className="container page-section">
         <CoinListSection
           title="Market overview"
-          description="A fast-scanning market board with fresh snapshot data for the tracked assets."
+          description="Live snapshot data for the tracked assets."
           limit={10}
           showViewAll
         />

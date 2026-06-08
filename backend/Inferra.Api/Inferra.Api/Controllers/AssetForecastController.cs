@@ -2,11 +2,13 @@
 using Inferra.Application.Interfaces.Services;
 using Inferra.Application.Models.Assets;
 using Inferra.Application.Models.Forecasts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inferra.Api.Controllers
 {
+    [Authorize]
     [Route("api/assets/{symbol}/forecast")]
     [ApiController]
     public class AssetForecastController : ControllerBase

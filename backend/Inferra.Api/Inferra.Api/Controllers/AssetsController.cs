@@ -41,19 +41,5 @@ namespace Inferra.Api.Controllers
 
             return Ok(asset);
         }
-
-        [HttpGet("{symbol}/sentiment")]
-        [ProducesResponseType(typeof(SentimentSnapshotDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetSentiment(string symbol)
-        {
-            var sentiment = await _assetQueryService.GetSentimentBySymbolAsync(symbol);
-            if (sentiment is null)
-            {
-                return NotFound(new { message = $"No sentiment data found for '{symbol}'." });
-            }
-
-            return Ok(sentiment);
-        }
     }
 }

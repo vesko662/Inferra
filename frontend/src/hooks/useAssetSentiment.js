@@ -32,6 +32,8 @@ function useAssetSentiment(symbol) {
 
     if (symbol) {
       loadSentiment();
+    } else {
+      setIsLoading(false);
     }
 
     return () => {

@@ -77,11 +77,16 @@ class DotNetApiClient:
         deadline = None if self.wait_timeout <= 0 else asyncio.get_running_loop().time() + self.wait_timeout
         attempt = 1
 
+        headers = {}
+        if settings.ml_service_api_key:
+            headers["X-Api-Key"] = settings.ml_service_api_key
+
         async with httpx.AsyncClient(
             base_url=self.base_url,
             timeout=self.timeout,
             verify=self.verify_ssl,
             follow_redirects=True,
+            headers=headers,
         ) as client:
             while True:
                 try:

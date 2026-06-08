@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 import ErrorMessage from "../components/common/ErrorMessage";
 import LoadingState from "../components/common/LoadingState";
 import CandleChart from "../components/crypto/CandleChart";
@@ -35,7 +36,8 @@ function CoinDetailPage() {
     isLoading: candlesLoading
   } = useAssetCandles(symbol, selectedRange);
   const { forecast } = useAssetForecast(symbol);
-  const { sentiment, isLoading: sentimentLoading } = useAssetSentiment(symbol);
+  const { isAuthenticated, login } = useAuth();
+  const { sentiment, error: sentimentError, isLoading: sentimentLoading } = useAssetSentiment(isAuthenticated ? symbol : null);
 
   if (isLoading) {
     return (
@@ -142,13 +144,34 @@ function CoinDetailPage() {
             </div>
           </header>
 
-          {sentimentLoading && <LoadingState label="Loading sentiment..." />}
-          {!sentimentLoading && !sentiment && (
-            <p style={{ color: "var(--color-text-muted)", fontSize: "0.875rem" }}>
-              No sentiment data available yet.
-            </p>
+          {!isAuthenticated ? (
+            <div className="sentiment-locked">
+              <div className="sentiment-locked__blur" aria-hidden="true">
+                <SentimentGauge sentiment={{ bullish: 40, bearish: 30, neutral: 30, generatedAt: null }} />
+              </div>
+              <div className="sentiment-locked__overlay">
+                <p>Log in to view sentiment data</p>
+                <button className="button button--primary" type="button" onClick={login}>
+                  Log in
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              {sentimentLoading && <LoadingState label="Loading sentiment..." />}
+              {!sentimentLoading && sentimentError && (
+                <p style={{ color: "var(--color-text-muted)", fontSize: "0.875rem" }}>
+                  {sentimentError}
+                </p>
+              )}
+              {!sentimentLoading && !sentimentError && !sentiment && (
+                <p style={{ color: "var(--color-text-muted)", fontSize: "0.875rem" }}>
+                  No sentiment data available yet.
+                </p>
+              )}
+              {!sentimentLoading && !sentimentError && sentiment && <SentimentGauge sentiment={sentiment} />}
+            </>
           )}
-          {!sentimentLoading && sentiment && <SentimentGauge sentiment={sentiment} />}
         </article>
 
         <article className="surface-card detail-card detail-card--wide">
@@ -187,33 +210,42 @@ function CoinDetailPage() {
             <ErrorMessage title="Unable to load historical chart data" message={candlesError} />
           ) : null}
           {!candlesLoading && !candlesError ? (
-            <CandleChart candles={candles} snapshot={snapshot} forecastModels={forecast} mode={chartMode} />
+            <CandleChart
+              candles={candles}
+              snapshot={snapshot}
+              forecastModels={isAuthenticated ? forecast : []}
+              mode={chartMode}
+            />
           ) : null}
+
+          {!isAuthenticated && (
+            <div className="forecast-locked">
+              <div className="forecast-locked__preview" aria-hidden="true">
+                {[
+                  { label: "LinearRegression", color: "#f4c96b" },
+                  { label: "LSTM", color: "#c48bff" },
+                  { label: "XGBoost", color: "#ff8a65" }
+                ].map((m) => (
+                  <div key={m.label} className="forecast-locked__model">
+                    <span className="forecast-locked__swatch" style={{ backgroundColor: m.color }} />
+                    <span className="forecast-locked__model-label">{"█".repeat(m.label.length)}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="forecast-locked__cta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                <span>Log in to unlock price predictions</span>
+                <button className="button button--primary button--sm" type="button" onClick={login}>
+                  Log in
+                </button>
+              </div>
+            </div>
+          )}
         </article>
 
-        <article className="surface-card detail-card detail-card--wide">
-          <header className="section-header">
-            <div>
-              <h2>Market context</h2>
-              <p>Live snapshot values and historical candles work together, but remain separate.</p>
-            </div>
-          </header>
-
-          <div className="feature-grid">
-            <div className="feature-tile">
-              <strong>Snapshot data</strong>
-              <p>Used for current price, daily move, market cap, volume, and last updated time.</p>
-            </div>
-            <div className="feature-tile">
-              <strong>Candle data</strong>
-              <p>Used only for chart history, range selection, and trend visualization.</p>
-            </div>
-            <div className="feature-tile">
-              <strong>Future expansion</strong>
-              <p>Add favorites, alerts, comparisons, or richer analytics without changing the page model.</p>
-            </div>
-          </div>
-        </article>
       </section>
     </div>
   );

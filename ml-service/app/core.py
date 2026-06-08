@@ -47,6 +47,7 @@ class Settings:
         for model in os.getenv("ENABLED_MODELS", "LinearRegression,XGBoost,LSTM").split(",")
         if model.strip()
     ]
+    ml_service_api_key: str = os.getenv("ML_SERVICE_API_KEY", "")
 
 
 settings = Settings()

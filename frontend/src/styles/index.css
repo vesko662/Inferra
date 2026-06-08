@@ -63,6 +63,12 @@ button {
 
 .app-shell {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
 }
 
 .app-header {
@@ -177,6 +183,127 @@ button {
 
 .app-main {
   padding: 2rem 0 4rem;
+}
+
+/* Footer */
+.app-footer {
+  border-top: 1px solid var(--color-border);
+  padding: 1.5rem 0;
+  margin-top: auto;
+}
+
+.app-footer__inner {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  opacity: 0.85;
+  transition: opacity var(--transition-base);
+}
+
+.footer-brand:hover { opacity: 1; }
+
+.brand__mark--sm {
+  width: 24px;
+  height: 24px;
+  font-size: 0.75rem;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 1.25rem;
+  flex: 1;
+}
+
+.footer-nav__link {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  transition: color var(--transition-base);
+}
+
+.footer-nav__link:hover { color: var(--color-text); }
+
+.footer-credits {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.footer-credits span {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+/* About page */
+.about-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.about-feature-card {
+  padding: 1.5rem;
+}
+
+.about-feature-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.about-feature-card p {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  font-size: 0.9rem;
+}
+
+.about-stack {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.about-stack-item {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.about-stack-item strong {
+  font-size: 0.9375rem;
+}
+
+.about-stack-item span {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.about-thesis {
+  padding: 2rem;
+  max-width: 680px;
+}
+
+.about-thesis h2 {
+  margin: 0.4rem 0 0.75rem;
+}
+
+.about-thesis p {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.section-header--stacked {
+  margin-bottom: 1.5rem;
 }
 
 .page,
@@ -656,6 +783,101 @@ button {
   margin: 0;
   font-size: 0.75rem;
   color: var(--color-text-muted);
+}
+
+/* Forecast locked banner */
+.forecast-locked {
+  margin-top: 0.75rem;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.forecast-locked__preview {
+  display: flex;
+  gap: 1.25rem;
+  padding: 0.625rem 1rem;
+  filter: blur(4px);
+  opacity: 0.35;
+  user-select: none;
+  pointer-events: none;
+}
+
+.forecast-locked__model {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
+}
+
+.forecast-locked__swatch {
+  width: 20px;
+  height: 3px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.forecast-locked__model-label {
+  color: transparent;
+  text-shadow: 0 0 6px rgba(255,255,255,0.4);
+  letter-spacing: 0.5px;
+  font-size: 0.75rem;
+}
+
+.forecast-locked__cta {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.forecast-locked__cta svg {
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.forecast-locked__cta span {
+  flex: 1;
+}
+
+.button--sm {
+  padding: 0.3rem 0.875rem;
+  font-size: 0.8125rem;
+}
+
+/* Sentiment locked state */
+.sentiment-locked {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.sentiment-locked__blur {
+  filter: blur(6px);
+  opacity: 0.4;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sentiment-locked__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.sentiment-locked__overlay p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
 }
 
 @keyframes spin {
