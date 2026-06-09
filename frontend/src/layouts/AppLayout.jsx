@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
@@ -7,8 +8,58 @@ const navItems = [
   { to: "/about", label: "About" }
 ];
 
+function getInitials(name) {
+  if (!name) return "?";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function UserMenu({ displayName, logout }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function handleClick(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  return (
+    <div className="user-menu" ref={ref}>
+      <button
+        className="user-menu__trigger"
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-haspopup="true"
+      >
+        <span className="user-menu__avatar">{getInitials(displayName)}</span>
+      </button>
+      {open && (
+        <div className="user-menu__dropdown">
+          <div className="user-menu__info">
+            <span className="user-menu__label">Signed in as</span>
+            <strong className="user-menu__name">{displayName}</strong>
+          </div>
+          <div className="user-menu__divider" />
+          <button
+            className="user-menu__action"
+            type="button"
+            onClick={() => { setOpen(false); logout(); }}
+          >
+            Logout
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function AppLayout() {
-  const { error, isAuthenticated, login, logout, register, user } = useAuth();
+  const { error, isAdmin, isAuthenticated, login, logout, register, user } = useAuth();
   const displayName = user?.fullName || user?.username || user?.email || "Authenticated user";
 
   return (
@@ -36,21 +87,23 @@ function AppLayout() {
                 {item.label}
               </NavLink>
             ))}
+            {isAdmin && (
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  isActive ? "main-nav__link main-nav__link--active" : "main-nav__link"
+                }
+              >
+                Admin
+              </NavLink>
+            )}
           </nav>
 
           <div className="auth-bar">
             {error ? <span className="auth-bar__error">{error}</span> : null}
 
             {isAuthenticated ? (
-              <>
-                <div className="auth-bar__user">
-                  <span className="auth-bar__label">Signed in</span>
-                  <strong>{displayName}</strong>
-                </div>
-                <button className="button button--ghost" type="button" onClick={logout}>
-                  Logout
-                </button>
-              </>
+              <UserMenu displayName={displayName} logout={logout} />
             ) : (
               <>
                 <button className="button button--ghost" type="button" onClick={register}>

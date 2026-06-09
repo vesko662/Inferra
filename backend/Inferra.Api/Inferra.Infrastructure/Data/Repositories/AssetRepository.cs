@@ -75,6 +75,33 @@ namespace Inferra.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
+        public async Task<bool> SetMlEnabledAsync(string symbol, bool enabled)
+        {
+            var asset = await _context.Assets.FirstOrDefaultAsync(a => a.Symbol == symbol);
+            if (asset is null) return false;
+            asset.IsMlEnabled = enabled;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> SetNewsEnabledAsync(string symbol, bool enabled)
+        {
+            var asset = await _context.Assets.FirstOrDefaultAsync(a => a.Symbol == symbol);
+            if (asset is null) return false;
+            asset.IsNewsEnabled = enabled;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> SoftDeleteAsync(string symbol)
+        {
+            var asset = await _context.Assets.FirstOrDefaultAsync(a => a.Symbol == symbol);
+            if (asset is null) return false;
+            asset.IsDeleted = true;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

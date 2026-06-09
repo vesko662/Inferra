@@ -52,8 +52,8 @@ namespace Inferra.Infrastructure.DependencyInjection
             services.AddScoped<IForecastRunRepository, ForecastRunRepository>();
             services.AddScoped<ISentimentSnapshotRepository, SentimentSnapshotRepository>();
 
-            //services.AddHostedService<DailyCandleUpdateJob>();
-            //services.AddHostedService<MarketSnapshotJob>();
+            services.AddHostedService<DailyCandleUpdateJob>();
+            services.AddHostedService<MarketSnapshotJob>();
             
 
 
@@ -63,8 +63,8 @@ namespace Inferra.Infrastructure.DependencyInjection
                 client.DefaultRequestHeaders.Add("X-Api-Key", configuration["MlService:ApiKey"]);
             });
 
-            //services.AddHostedService<MlTrainingJob>();
-            //services.AddHostedService<MlPredictionJob>();
+            services.AddHostedService<MlTrainingJob>();
+            services.AddHostedService<MlPredictionJob>();
 
             var newsApiBaseUrl = configuration["Integrations:NewsApi:BaseUrl"]
                 ?? throw new InvalidOperationException("Missing configuration: Integrations:NewsApi:BaseUrl");

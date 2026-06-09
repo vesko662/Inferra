@@ -16,10 +16,12 @@ function CoinsPage() {
 
       <section className="container page-section">
         <CoinListSection
-          title="All tracked assets"
-          description="A CoinGecko-style market view with compact rows, fresh snapshot metrics, and quick navigation into each dedicated asset page."
+          title="Crypto Markets"
+          description="Live prices and 24h performance for all tracked assets."
           pageSize={10}
           enablePagination
+          showRefresh={false}
+          showLastUpdated={false}
         />
       </section>
     </div>

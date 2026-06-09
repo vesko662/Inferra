@@ -60,6 +60,11 @@ export async function getAccessToken(minValidity = 60) {
   return refreshToken(minValidity);
 }
 
+export function hasRole(role: string): boolean {
+  const roles: string[] = (keycloak.tokenParsed as any)?.realm_access?.roles ?? [];
+  return roles.includes(role);
+}
+
 export function getParsedUser() {
   const parsedToken = keycloak.tokenParsed;
 

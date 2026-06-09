@@ -22,7 +22,6 @@ function AssetRow({ asset, index }) {
           <strong>{getAssetDisplayLabel(asset, index)}</strong>
           <div className="market-row__subline">
             <span>{asset.symbol || "N/A"}</span>
-            <span>{asset.pairSymbol || "No pair"}</span>
           </div>
         </div>
       </div>
@@ -35,11 +34,6 @@ function AssetRow({ asset, index }) {
       <div className="market-row__cell">
         <span className="market-row__label">24h</span>
         <strong className={changeClassName}>{formatPercentage(changeValue)}</strong>
-      </div>
-
-      <div className="market-row__cell">
-        <span className="market-row__label">Market cap</span>
-        <strong>{formatCompactNumber(asset.snapshot?.marketCap)}</strong>
       </div>
 
       <div className="market-row__cell">

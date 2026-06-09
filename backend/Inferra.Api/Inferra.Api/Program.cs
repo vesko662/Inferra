@@ -2,7 +2,6 @@ using Inferra.Infrastructure.Data.Seed;
 using Inferra.Infrastructure.DependencyInjection;
 using Inferra.Application.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -22,6 +21,33 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.Authority = "http://localhost:8081/realms/inferra";
         options.RequireHttpsMetadata = false;
         options.TokenValidationParameters.ValidateAudience = false;
+        options.TokenValidationParameters.RoleClaimType = System.Security.Claims.ClaimTypes.Role;
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = context =>
+            {
+                var identity = context.Principal?.Identity as System.Security.Claims.ClaimsIdentity;
+                if (identity is null) return Task.CompletedTask;
+
+                var realmAccess = context.Principal?
+                    .FindFirst("realm_access")?.Value;
+
+                if (realmAccess is null) return Task.CompletedTask;
+
+                var parsed = System.Text.Json.JsonDocument.Parse(realmAccess);
+                if (parsed.RootElement.TryGetProperty("roles", out var rolesElement))
+                {
+                    foreach (var role in rolesElement.EnumerateArray())
+                    {
+                        identity.AddClaim(new System.Security.Claims.Claim(
+                            System.Security.Claims.ClaimTypes.Role,
+                            role.GetString() ?? ""));
+                    }
+                }
+
+                return Task.CompletedTask;
+            }
+        };
     });
 
 builder.Services.AddAuthorization();
@@ -32,7 +58,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var seeder = scope.ServiceProvider.GetRequiredService<AssetsSeeder>();
-    //await seeder.SeedAsync();
+    await seeder.SeedAsync();
 }
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

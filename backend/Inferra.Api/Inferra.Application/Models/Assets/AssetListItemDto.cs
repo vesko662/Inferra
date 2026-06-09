@@ -11,5 +11,7 @@ namespace Inferra.Application.Models.Assets
         public string Name { get; init; } = null!;
         public string PairSymbol { get; init; } = null!;
         public string? ImageUrl { get; init; }
+        public bool IsMlEnabled { get; init; }
+        public bool IsNewsEnabled { get; init; }
     }
 }

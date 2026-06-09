@@ -31,6 +31,7 @@ namespace Inferra.Domain.Entities
 
         public bool IsMlEnabled { get; set; }
         public bool IsNewsEnabled { get; set; }
+        public bool IsDeleted { get; set; }
 
         public ICollection<DailyCandle> DailyCandles { get; set; } = new List<DailyCandle>();
         public ICollection<ForecastRun> ForecastRuns { get; set; } = new List<ForecastRun>();

@@ -18,6 +18,9 @@ namespace Inferra.Application.Interfaces.Repositories
 
         Task<List<Asset>> GetMlAssetsAsync();
         Task<List<Asset>> GetNewsAssetsAsync();
+        Task<bool> SetMlEnabledAsync(string symbol, bool enabled);
+        Task<bool> SetNewsEnabledAsync(string symbol, bool enabled);
+        Task<bool> SoftDeleteAsync(string symbol);
         Task SaveChangesAsync();
     }
 }

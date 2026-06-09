@@ -111,7 +111,9 @@ namespace Inferra.Application.Services
                 Symbol = asset.Symbol,
                 Name = asset.Name,
                 PairSymbol = asset.PairSymbol,
-                ImageUrl = asset.ImageUrl
+                ImageUrl = asset.ImageUrl,
+                IsMlEnabled = asset.IsMlEnabled,
+                IsNewsEnabled = asset.IsNewsEnabled
             };
         }
 

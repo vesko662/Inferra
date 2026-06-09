@@ -23,6 +23,9 @@ namespace Inferra.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Asset>()
+                .HasQueryFilter(a => !a.IsDeleted);
+
+            modelBuilder.Entity<Asset>()
                 .HasIndex(x => x.Symbol)
                 .IsUnique();
 

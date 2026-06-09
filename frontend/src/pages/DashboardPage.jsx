@@ -48,6 +48,9 @@ function DashboardPage() {
           description="Live snapshot data for the tracked assets."
           limit={10}
           showViewAll
+          showSearch={false}
+          showRefresh={false}
+          showLastUpdated={false}
         />
       </section>
     </div>

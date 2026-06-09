@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import LoadingState from "../components/common/LoadingState";
 import keycloak, {
   getParsedUser,
+  hasRole,
   initKeycloak,
   login as keycloakLogin,
   logout as keycloakLogout,
@@ -107,6 +108,7 @@ function AuthProvider({ children }) {
     () => ({
       isInitialized,
       isAuthenticated,
+      isAdmin: isAuthenticated && hasRole("admin"),
       user,
       token,
       error,

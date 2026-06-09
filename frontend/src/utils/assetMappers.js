@@ -79,6 +79,8 @@ export function normalizeAssetListItem(rawAsset) {
     name: toSafeString(rawAsset?.name),
     pairSymbol: toSafeString(rawAsset?.pairSymbol),
     imageUrl: toSafeString(rawAsset?.imageUrl),
+    isMlEnabled: rawAsset?.isMlEnabled ?? false,
+    isNewsEnabled: rawAsset?.isNewsEnabled ?? false,
     snapshot: null
   };
 }

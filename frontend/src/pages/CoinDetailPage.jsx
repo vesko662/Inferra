@@ -81,7 +81,6 @@ function CoinDetailPage() {
           <Link className="text-link" to="/coins">
             Back to markets
           </Link>
-          <div className="eyebrow">{routeKey}</div>
           <h1>{assetLabel}</h1>
           <p>
             A dedicated asset page that keeps current market snapshot data separate from historical
@@ -160,9 +159,14 @@ function CoinDetailPage() {
             <>
               {sentimentLoading && <LoadingState label="Loading sentiment..." />}
               {!sentimentLoading && sentimentError && (
-                <p style={{ color: "var(--color-text-muted)", fontSize: "0.875rem" }}>
-                  {sentimentError}
-                </p>
+                <div className="sentiment-locked">
+                  <div className="sentiment-locked__blur" aria-hidden="true">
+                    <SentimentGauge sentiment={{ bullish: 40, bearish: 30, neutral: 30, generatedAt: null }} />
+                  </div>
+                  <div className="sentiment-locked__overlay">
+                    <p>This asset is not yet supported</p>
+                  </div>
+                </div>
               )}
               {!sentimentLoading && !sentimentError && !sentiment && (
                 <p style={{ color: "var(--color-text-muted)", fontSize: "0.875rem" }}>

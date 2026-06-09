@@ -12,6 +12,9 @@ function CoinListSection({
   description,
   limit,
   showViewAll = false,
+  showSearch = true,
+  showRefresh = true,
+  showLastUpdated = true,
   pageSize = 10,
   enablePagination = false
 }) {
@@ -60,12 +63,16 @@ function CoinListSection({
         </div>
 
         <div className="section-header__actions">
-          <span className="meta-chip">
-            {lastUpdated ? `Updated ${lastUpdated}` : "Awaiting data"}
-          </span>
-          <button className="button button--ghost" type="button" onClick={refresh}>
-            Refresh
-          </button>
+          {showLastUpdated ? (
+            <span className="meta-chip">
+              {lastUpdated ? `Updated ${lastUpdated}` : "Awaiting data"}
+            </span>
+          ) : null}
+          {showRefresh ? (
+            <button className="button button--ghost" type="button" onClick={refresh}>
+              Refresh
+            </button>
+          ) : null}
           {showViewAll ? (
             <Link className="button button--primary" to="/coins">
               View all
@@ -74,12 +81,14 @@ function CoinListSection({
         </div>
       </header>
 
-      <SearchInput
-        label="Search assets"
-        placeholder="Search by asset name, symbol, or pair"
-        value={query}
-        onChange={setQuery}
-      />
+      {showSearch ? (
+        <SearchInput
+          label="Search assets"
+          placeholder="Search by asset name, symbol, or pair"
+          value={query}
+          onChange={setQuery}
+        />
+      ) : null}
 
       {isLoading ? <LoadingState label="Loading tracked assets..." /> : null}
 
@@ -109,7 +118,6 @@ function CoinListSection({
             <span>Asset</span>
             <span>Price</span>
             <span>24h</span>
-            <span>Market cap</span>
             <span>Volume</span>
           </div>
           {visibleAssets.map((asset, index) => (

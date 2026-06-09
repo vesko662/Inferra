@@ -181,6 +181,90 @@ button {
   max-width: 18rem;
 }
 
+/* User menu dropdown */
+.user-menu {
+  position: relative;
+}
+
+.user-menu__trigger {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.user-menu__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #0a0f1a;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  transition: opacity 0.15s;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.user-menu__trigger:hover .user-menu__avatar {
+  opacity: 0.85;
+}
+
+.user-menu__dropdown {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  min-width: 13rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  z-index: 200;
+  overflow: hidden;
+}
+
+.user-menu__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.75rem 1rem;
+}
+
+.user-menu__label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.user-menu__name {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.user-menu__divider {
+  height: 1px;
+  background: var(--color-border);
+}
+
+.user-menu__action {
+  display: block;
+  width: 100%;
+  padding: 0.65rem 1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.user-menu__action:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .app-main {
   padding: 2rem 0 4rem;
 }
@@ -468,7 +552,7 @@ button {
 .market-table__header,
 .market-row {
   display: grid;
-  grid-template-columns: minmax(260px, 2.8fr) repeat(4, minmax(100px, 1fr));
+  grid-template-columns: minmax(260px, 2.8fr) repeat(3, minmax(120px, 1fr));
   gap: 1rem;
   align-items: center;
 }

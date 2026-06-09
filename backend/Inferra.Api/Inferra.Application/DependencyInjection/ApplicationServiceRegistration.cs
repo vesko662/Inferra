@@ -16,6 +16,7 @@ namespace Inferra.Application.DependencyInjection
             services.AddScoped<IForecastIngestionService, ForecastIngestionService>();
             services.AddScoped<IMlDatasetService, MlDatasetService>();
             services.AddScoped<INewsSentimentService, NewsSentimentService>();
+            services.AddScoped<IAssetAdminService, AssetAdminService>();
             return services;
         }
     }
